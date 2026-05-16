@@ -1,0 +1,2 @@
+import express from "express";import { createContactMessage,deleteContactMessage,getContactMessages,updateContactStatus } from "../controllers/contactController.js";import { protect } from "../middleware/authMiddleware.js";
+const router=express.Router();router.route('/').post(createContactMessage).get(protect,getContactMessages);router.route('/:id').patch(protect,updateContactStatus).delete(protect,deleteContactMessage);export default router;

@@ -1,0 +1,5 @@
+import asyncHandler from "express-async-handler";import Contact from "../models/Contact.js";import { createTransporter } from "../config/mail.js";import escapeHtml from "../utils/escapeHtml.js";
+export const createContactMessage=asyncHandler(async(req,res)=>{const c=await Contact.create(req.body);const t=createTransporter();if(t){await t.sendMail({from:process.env.MAIL_FROM||process.env.MAIL_USER,to:process.env.CONTACT_TO||process.env.MAIL_USER,replyTo:req.body.email,subject:`New portfolio message from ${escapeHtml(req.body.name)}`,html:`<h2>New Abhiyan Portfolio Message</h2><p>${escapeHtml(req.body.message)}</p>`})}res.status(201).json({message:'Message saved successfully',contact:c})});
+export const getContactMessages=asyncHandler(async(req,res)=>res.json(await Contact.find().sort({createdAt:-1})));
+export const updateContactStatus=asyncHandler(async(req,res)=>res.json(await Contact.findByIdAndUpdate(req.params.id,req.body,{new:true})));
+export const deleteContactMessage=asyncHandler(async(req,res)=>{await Contact.findByIdAndDelete(req.params.id);res.json({message:'Message deleted'})});
