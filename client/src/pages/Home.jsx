@@ -1,0 +1,12 @@
+import { motion } from "framer-motion";
+import About from "../components/About.jsx";
+import ContactSection from "../components/ContactSection.jsx";
+import GallerySection from "../components/GallerySection.jsx";
+import Hero from "../components/Hero.jsx";
+import Navbar from "../components/Navbar.jsx";
+import ProjectsSection from "../components/ProjectsSection.jsx";
+import SkillsSection from "../components/SkillsSection.jsx";
+import Timeline from "../components/Timeline.jsx";
+import { pageTransition } from "../animations/variants.js";
+const Home=()=> <motion.main variants={pageTransition} initial="initial" animate="animate" exit="exit" className="min-h-screen"><Navbar/><Hero/><About/><SkillsSection/><ProjectsSection/><GallerySection/><Timeline/><ContactSection/><footer className="border-t border-white/10 bg-void px-5 py-8 text-center text-sm text-white/50">Abhiyan (c) 2026. Code, graphite, and digital atmosphere.</footer></motion.main>;
+export default Home;
