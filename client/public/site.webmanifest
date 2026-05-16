@@ -1,0 +1,9 @@
+{
+  "name": "Abhiyan Creative Developer Portfolio",
+  "short_name": "Abhiyan",
+  "description": "A futuristic portfolio for a programmer, sketch artist, and digital designer.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#00d9ff"
+}
