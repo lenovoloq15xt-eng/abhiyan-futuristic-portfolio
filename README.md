@@ -22,7 +22,7 @@ cp server/.env.example server/.env
 cp client/.env.example client/.env
 ```
 
-3. Update `server/.env` with MongoDB, JWT, Cloudinary, and mail credentials.
+3. Update `server/.env` with MongoDB, JWT, Cloudinary, mail credentials, and your private admin password.
 
 4. Seed starter content:
 
@@ -38,9 +38,6 @@ npm run dev
 
 Client runs on `http://localhost:5173`; server runs on `http://localhost:5000`.
 
-## Default Seed Admin
+## Admin
 
-- Email: `admin@abhiyan.dev`
-- Password: `ChangeMe123!`
-
-Change these immediately in production.
+Set `ADMIN_EMAIL` and `ADMIN_PASSWORD` in your private environment variables. Do not put real passwords in GitHub.
