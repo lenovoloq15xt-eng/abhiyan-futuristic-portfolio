@@ -1,2 +1,50 @@
-import dotenv from "dotenv";import express from "express";import cors from "cors";import helmet from "helmet";import morgan from "morgan";import path from "path";import { fileURLToPath } from "url";import connectDB from "./config/db.js";import authRoutes from "./routes/authRoutes.js";import projectRoutes from "./routes/projectRoutes.js";import galleryRoutes from "./routes/galleryRoutes.js";import contactRoutes from "./routes/contactRoutes.js";import skillRoutes from "./routes/skillRoutes.js";import { notFound,errorHandler } from "./middleware/errorMiddleware.js";
-dotenv.config();const app=express();const __filename=fileURLToPath(import.meta.url);const __dirname=path.dirname(__filename);connectDB();app.use(helmet({crossOriginResourcePolicy:{policy:'cross-origin'}}));app.use(cors({origin:process.env.CLIENT_URL||'http://localhost:5173',credentials:true}));app.use(express.json({limit:'5mb'}));app.use(express.urlencoded({extended:true,limit:'5mb'}));if(process.env.NODE_ENV!=='production')app.use(morgan('dev'));app.get('/api/health',(req,res)=>res.json({status:'ok',service:'abhiyan-portfolio-api'}));app.use('/api/auth',authRoutes);app.use('/api/projects',projectRoutes);app.use('/api/gallery',galleryRoutes);app.use('/api/contact',contactRoutes);app.use('/api/skills',skillRoutes);if(process.env.NODE_ENV==='production'){const d=path.join(__dirname,'../client/dist');app.use(express.static(d));app.get('*',(req,res)=>res.sendFile(path.join(d,'index.html')))}app.use(notFound);app.use(errorHandler);const PORT=process.env.PORT||5000;app.listen(PORT,()=>console.log(`Abhiyan API running on port ${PORT}`));
+import dotenv from "dotenv";
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import path from "path";
+import { fileURLToPath } from "url";
+import connectDB from "./config/db.js";
+import ensureAdmin from "./utils/ensureAdmin.js";
+import authRoutes from "./routes/authRoutes.js";
+import projectRoutes from "./routes/projectRoutes.js";
+import galleryRoutes from "./routes/galleryRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
+import skillRoutes from "./routes/skillRoutes.js";
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+
+dotenv.config();
+
+const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+await connectDB();
+await ensureAdmin();
+
+app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
+app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173", credentials: true }));
+app.use(express.json({ limit: "5mb" }));
+app.use(express.urlencoded({ extended: true, limit: "5mb" }));
+
+if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
+
+app.get("/api/health", (_req, res) => res.json({ status: "ok", service: "abhiyan-portfolio-api" }));
+app.use("/api/auth", authRoutes);
+app.use("/api/projects", projectRoutes);
+app.use("/api/gallery", galleryRoutes);
+app.use("/api/contact", contactRoutes);
+app.use("/api/skills", skillRoutes);
+
+if (process.env.NODE_ENV === "production") {
+  const d = path.join(__dirname, "../client/dist");
+  app.use(express.static(d));
+  app.get("*", (_req, res) => res.sendFile(path.join(d, "index.html")));
+}
+
+app.use(notFound);
+app.use(errorHandler);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Abhiyan API running on port ${PORT}`));
