@@ -10,18 +10,22 @@ const ensureAdmin = async () => {
     return;
   }
 
-  const existing = await User.findOne({ email });
+  try {
+    const existing = await User.findOne({ email });
 
-  if (existing) {
-    existing.username = username;
-    existing.password = password;
-    await existing.save();
-    console.log(`Admin synced: ${email}`);
-    return;
+    if (existing) {
+      existing.username = username;
+      existing.password = password;
+      await existing.save();
+      console.log(`Admin synced: ${email}`);
+      return;
+    }
+
+    await User.create({ username, email, password });
+    console.log(`Admin created: ${email}`);
+  } catch (error) {
+    console.warn(`Admin sync skipped: ${error.message}`);
   }
-
-  await User.create({ username, email, password });
-  console.log(`Admin created: ${email}`);
 };
 
 export default ensureAdmin;
