@@ -2,80 +2,34 @@
 
 This project is ready for one-service deployment on Render. The Node server serves the React production build and exposes the `/api` routes.
 
-## What You Need
-
-- GitHub account
-- Render account
-- MongoDB Atlas free database
-- Optional Cloudinary account for uploads
-- Optional email app password for Nodemailer
-- Optional custom domain DNS access
-
 ## Deploy On Render
 
-1. Push this folder to a GitHub repository.
-2. In Render, choose **New +** then **Blueprint**.
-3. Connect the GitHub repository.
-4. Render will read `render.yaml`.
-5. Fill the secret environment variables:
+1. In Render, choose **New +** then **Blueprint**.
+2. Connect this GitHub repository.
+3. Render will read `render.yaml`.
+4. Fill only the required private values:
 
 ```env
 MONGO_URI=mongodb+srv://USER:PASSWORD@cluster.mongodb.net/abhiyan_portfolio
-CLIENT_URL=https://your-render-url.onrender.com
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-MAIL_USER=your_email@gmail.com
-MAIL_PASS=your_email_app_password
-MAIL_FROM=Abhiyan Portfolio <your_email@gmail.com>
-CONTACT_TO=your_email@gmail.com
-ADMIN_EMAIL=admin@abhiyan.dev
-ADMIN_PASSWORD=ChangeMe123!
+ADMIN_PASSWORD=choose-a-private-strong-password
 ```
 
-6. Deploy.
-7. Open Render Shell and run:
+`ADMIN_EMAIL` is already set to `admin@abhiyan.dev` in `render.yaml`. You can change it in Render if you want.
+
+5. Deploy.
+6. Open Render Shell and seed the database:
 
 ```bash
 npm run seed --prefix server
 ```
 
-8. Login:
+7. Login at `/admin` using:
 
 ```text
-/admin
-admin@abhiyan.dev
-ChangeMe123!
+Email: admin@abhiyan.dev
+Password: the private ADMIN_PASSWORD you entered in Render
 ```
-
-Change the admin password for real use.
 
 ## Custom Domain
 
-For a URL like:
-
-```text
-https://abhiyan.shrestha.com
-```
-
-You must control DNS for `shrestha.com`.
-
-In Render:
-
-```text
-Web Service -> Settings -> Custom Domains -> Add Custom Domain
-```
-
-Add:
-
-```text
-abhiyan.shrestha.com
-```
-
-Then add the DNS record Render shows, usually:
-
-```text
-Type: CNAME
-Name: abhiyan
-Target: your-app.onrender.com
-```
+For `https://abhiyan.shrestha.com`, you must control DNS for `shrestha.com`. In Render, open the web service, go to **Settings -> Custom Domains**, add `abhiyan.shrestha.com`, then add the CNAME record Render gives you.
