@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: abhiyan-futuristic-portfolio
+    name: abhiyan-portfolio
     runtime: node
     plan: free
     buildCommand: npm install && npm run install:all && npm run build
